@@ -10,6 +10,7 @@
 #include "share/io/scream_output_manager.hpp"
 #include "share/io/scorpio_input.hpp"
 #include "share/atm_process/ATMBufferManager.hpp"
+#include "share/atm_process/SCDataManager.hpp"
 
 #include "ekat/logging/ekat_logger.hpp"
 #include "ekat/mpi/ekat_comm.hpp"
@@ -77,6 +78,12 @@ public:
   // Sets a pre-built SurfaceCoupling object in the driver (for CIME runs only)
   void set_surface_coupling (const std::shared_ptr<SurfaceCoupling>& sc) { m_surface_coupling = sc; }
 
+  // Adds cpl import/export information to SCDataManager.
+  void setup_sc_import (const int import_size, const int num_imports, Real* import_data_ptr,
+                        char* import_names_ptr, int* import_vec_comps_ptr, Real *import_constant_multiple);
+  void setup_sc_export (const int export_size, const int num_exports, Real* export_data_ptr,
+                        char* export_names_ptr, int* export_vec_comps_ptr, Real *export_constant_multiple);
+
   // Load initial conditions for atm inputs
   void initialize_fields (const util::TimeStamp& run_t0, const util::TimeStamp& case_t0);
 
@@ -127,6 +134,9 @@ public:
 
   const std::shared_ptr<ATMBufferManager>& get_memory_buffer() const { return m_memory_buffer; }
 
+  const std::shared_ptr<SCDataManager>& get_sc_import_data_manager() const { return m_sc_import_data_manager; }
+  const std::shared_ptr<SCDataManager>& get_sc_export_data_manager() const { return m_sc_export_data_manager; }
+
   const std::shared_ptr<AtmosphereProcessGroup>& get_atm_processes () const { return m_atm_process_group; }
 
 protected:
@@ -154,6 +164,8 @@ protected:
   std::list<OutputManager>                  m_output_managers;
 
   std::shared_ptr<ATMBufferManager>         m_memory_buffer;
+  std::shared_ptr<SCDataManager>            m_sc_import_data_manager;
+  std::shared_ptr<SCDataManager>            m_sc_export_data_manager;
 
   // Surface coupling stuff
   std::shared_ptr<SurfaceCoupling>          m_surface_coupling;

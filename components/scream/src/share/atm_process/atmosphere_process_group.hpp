@@ -62,6 +62,9 @@ public:
   // the ATMBufferManager
   void init_buffers(const ATMBufferManager& buffer_manager);
 
+  void setup_sc_import_data(const SCDataManager& sc_data_manager);
+  void setup_sc_export_data(const SCDataManager& sc_data_manager);
+
   // The APG class needs to perform special checks before establishing whether
   // a required group/field is indeed a required group for this APG
   void set_required_field (const Field& field);

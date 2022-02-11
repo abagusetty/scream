@@ -188,6 +188,22 @@ void AtmosphereDriver::create_grids()
   m_atm_logger->info("[EAMXX] create_grids ... done!");
 }
 
+void AtmosphereDriver::setup_sc_import(const int import_size, const int num_imports, Real* import_data_ptr,
+                                       char* import_names_ptr, int* import_vec_comps_ptr, Real* import_constant_multiple)
+{
+  m_sc_import_data_manager = std::make_shared<SCDataManager>();
+  m_sc_import_data_manager->setup_internals(import_size, num_imports, import_data_ptr,
+                                            import_names_ptr, import_vec_comps_ptr, import_constant_multiple);
+}
+
+void AtmosphereDriver::setup_sc_export(const int export_size, const int num_exports, Real* export_data_ptr,
+                                       char* export_names_ptr, int* export_vec_comps_ptr, Real *export_constant_multiple)
+{
+  m_sc_export_data_manager = std::make_shared<SCDataManager>();
+  m_sc_export_data_manager->setup_internals(export_size, num_exports, export_data_ptr,
+                                            export_names_ptr, export_vec_comps_ptr, export_constant_multiple);
+}
+
 void AtmosphereDriver::create_fields()
 {
   m_atm_logger->info("[EAMXX] create_fields ...");
@@ -868,6 +884,13 @@ void AtmosphereDriver::initialize_atm_procs ()
 
   const bool restarted_run = m_case_t0 < m_run_t0;
 
+  if (m_sc_import_data_manager) {
+    m_atm_process_group->setup_sc_import_data(*m_sc_import_data_manager);
+  }
+  if (m_sc_export_data_manager) {
+    m_atm_process_group->setup_sc_export_data(*m_sc_export_data_manager);
+  }
+
   // Initialize the processes
   m_atm_process_group->initialize(m_current_ts, restarted_run ? RunType::Restarted : RunType::Initial);
 
@@ -970,6 +993,10 @@ void AtmosphereDriver::finalize ( /* inputs? */ ) {
 
   // Destroy the buffer manager
   m_memory_buffer = nullptr;
+
+  // Destroy the surface coupling data managers
+  m_sc_import_data_manager = nullptr;
+  m_sc_export_data_manager = nullptr;
 
   // Destroy the surface coupling (if any)
   m_surface_coupling = nullptr;
