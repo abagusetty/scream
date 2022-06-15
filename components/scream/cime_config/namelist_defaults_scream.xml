@@ -231,6 +231,13 @@ tweaking their $case/namelist_scream.xml file.
     <Filename hgrid="ne4np4" COMPSET=".*SCREAM%AQUA.*">${DIN_LOC_ROOT}/atm/scream/init/scream-aquaplanet_init_ne4np4_L72_20220524.nc</Filename>
     <Filename hgrid="ne30np4" COMPSET=".*SCREAM%AQUA.*">${DIN_LOC_ROOT}/atm/scream/init/scream-aquaplanet_init_ne30np4_L128_20211202.nc</Filename> <!-- This will need to be updated to the new nccn name -->
     <Restart__Casename>${CASE}.scream</Restart__Casename>
+    <!-- Fields that we need to initialize, but are not in an initial condition file need to be inited here -->
+    <cldfrac_liq>0.0</cldfrac_liq>
+    <sgs_buoy_flux>0.0</sgs_buoy_flux>
+    <eddy_diff_mom>0.0</eddy_diff_mom>
+    <T_prev_micro_step>0.0</T_prev_micro_step>
+    <qv_prev_micro_step>0.0</qv_prev_micro_step>
+
   </Initial__Conditions>
 
   <!-- List of yaml files containing I/O output specs -->
