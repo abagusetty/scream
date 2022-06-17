@@ -70,6 +70,7 @@ protected:
 
   int m_field_size;
   int m_num_fields;
+  int m_num_scream_fields;
 
   view_2d<HostDevice, Real> m_field_data;
   name_t*                   m_field_names;

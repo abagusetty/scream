@@ -71,8 +71,10 @@ protected:
   Int m_num_cols; 
   Int m_num_levs;
 
-  // Number of imports
-  Int m_num_imports;
+  // Number of imports from cpl side (some may be label "unused")
+  Int m_num_cpl_imports;
+  // Number of imports SCREAM will use
+  Int m_num_scream_imports;
 
   // Views storing a 2d array with dims (num_cols,num_fields) for import data.
   // The field idx strides faster, since that's what mct does (so we can "view" the

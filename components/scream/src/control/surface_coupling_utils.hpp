@@ -17,6 +17,9 @@ struct ColumnInfo {
   KOKKOS_INLINE_FUNCTION
   ColumnInfo& operator= (const ColumnInfo&) = default;
 
+  // Index of this column in cpl data.
+  int cpl_indx;
+ 
   // Stride between the 1st entry of two consecutive columns to be imported.
   // Note: this is >= that number of scalars in a column. E.g., for a vector field layout like
   //       (ncols,2,nlevs), where we import only the 1st vector component, the stride
@@ -30,13 +33,12 @@ struct ColumnInfo {
   int col_offset;
 
   // Constant multple applied to import data.
-
-  // An example where this is useful is for fluxes, where cpl and EAMxx have different interpretations
+  // An example where this is useful is for fluxes, where cpl and SCREAM have different interpretations
   // of the positive direction. In this case, the constant multiple should be set to -1.
   Real constant_multiple;
 
   // Boolean that dictates if the field can be exported if do_export() is called during
-  // initialization. This is useful since inside EAMxx some fields require computation
+  // initialization. This is useful since inside SCREAM some fields require computation
   // internally.
   bool do_initial_export;
 
