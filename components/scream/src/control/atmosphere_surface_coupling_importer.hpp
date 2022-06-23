@@ -92,6 +92,9 @@ protected:
   // Column info used during import
   view_1d<DefaultDevice, SurfaceCouplingUtils::ColumnInfo> m_column_info;
 
+  // The grid is needed for property checks
+  std::shared_ptr<const AbstractGrid> m_grid;
+
 }; // class SurfaceCouplingImporter
 
 } // namespace scream
